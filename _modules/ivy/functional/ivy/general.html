@@ -1870,6 +1870,52 @@
 <span class="sd">    ret</span>
 <span class="sd">        x if x exists (is not None), else default.</span>
 
+<span class="sd">    Functional Examples</span>
+<span class="sd">    ------------------</span>
+<span class="sd">    With :code:`Any` input:</span>
+
+<span class="sd">    &gt;&gt;&gt; x = None</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, &quot;default_string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    default_string</span>
+
+<span class="sd">    &gt;&gt;&gt; x = &quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, &quot;default_string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    </span>
+
+<span class="sd">    &gt;&gt;&gt; x = ivy.array([4, 5, 6])</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, ivy.array([1, 2, 3]), rev=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    ivy.array([1, 2, 3])</span>
+
+<span class="sd">    &gt;&gt;&gt; x = lambda: ivy.array([1, 2, 3])</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, ivy.array([4, 5, 6]), with_callable=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    ivy.array([1, 2, 3])</span>
+
+<span class="sd">    &gt;&gt;&gt; x = lambda: None</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, lambda: ivy.array([1, 2, 3]), with_callable=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    ivy.array([1, 2, 3])</span>
+
+<span class="sd">    &gt;&gt;&gt; x = lambda: None</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, lambda: ivy.array([1, 2, 3]), catch_exceptions=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    ivy.array([1, 2, 3])</span>
+
+<span class="sd">    &gt;&gt;&gt; x = lambda a, b: a + b</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, lambda: ivy.array([1, 2, 3]), with_callable=True,\</span>
+<span class="sd">                        catch_exceptions=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    ivy.array([1, 2, 3])</span>
+
+<span class="sd">    &gt;&gt;&gt; x = lambda a, b: a + b</span>
+<span class="sd">    &gt;&gt;&gt; y = ivy.default(x, lambda: ivy.array([1, 2, 3]), with_callable=True,\</span>
+<span class="sd">                        catch_exceptions=True, rev=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(y)</span>
+<span class="sd">    ivy.array([1, 2, 3])</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">with_callable</span> <span class="o">=</span> <span class="n">catch_exceptions</span> <span class="ow">or</span> <span class="n">with_callable</span>
     <span class="k">if</span> <span class="n">rev</span><span class="p">:</span>
@@ -2462,7 +2508,22 @@
 
 
 <div class="viewcode-block" id="print_all_arrays_in_memory"><a class="viewcode-back" href="../../../../functional/ivy/general/print_all_arrays_in_memory.html#ivy.functional.ivy.general.print_all_arrays_in_memory">[docs]</a><span class="k">def</span> <span class="nf">print_all_arrays_in_memory</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Prints all arrays which are currently alive.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets all the native Ivy arrays which are currently alive(in the garbage collector)</span>
+<span class="sd">    from get_all_arrays_in_memory() function and prints them to the console.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Output</span>
+<span class="sd">    ------</span>
+<span class="sd">    Type and shape of all the Ivy native arrays which are currently alive.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">get_all_arrays_in_memory</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
 
@@ -3001,7 +3062,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="scatter_nd"><a class="viewcode-back" href="../../../../functional/ivy/general/scatter_nd.html#ivy.functional.ivy.general.scatter_nd">[docs]</a><span class="nd">@to_native_arrays_and_back</span>
+<div class="viewcode-block" id="scatter_nd"><a class="viewcode-back" href="../../../../functional/ivy/general/scatter_nd/scatter_nd_functional.html#ivy.functional.ivy.general.scatter_nd">[docs]</a><span class="nd">@to_native_arrays_and_back</span>
 <span class="nd">@handle_out_argument</span>
 <span class="nd">@handle_nestable</span>
 <span class="k">def</span> <span class="nf">scatter_nd</span><span class="p">(</span>
@@ -3011,8 +3072,8 @@
     <span class="n">tensor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">ivy</span><span class="o">.</span><span class="n">NativeArray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reduction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">out</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">ivy</span><span class="o">.</span><span class="n">NativeArray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">ivy</span><span class="o">.</span><span class="n">NativeArray</span><span class="p">]:</span>
+    <span class="n">out</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Scatter updates into a new array according to indices.</span>
 
 <span class="sd">    Parameters</span>
@@ -3041,7 +3102,47 @@
 <span class="sd">    -------</span>
 <span class="sd">    ret</span>
 <span class="sd">        New array of given shape, with the values scattered at the indices.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    scatter values into an empty array, With :code:`ivy.Array` input:</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt; indices = ivy.array([[4], [3], [1], [7]])</span>
+<span class="sd">    &gt;&gt; updates = ivy.array([9, 10, 11, 12])</span>
+<span class="sd">    &gt;&gt; shape = ivy.array([8])</span>
+<span class="sd">    &gt;&gt; scatter = ivy.scatter_nd(indices, updates, shape)</span>
+<span class="sd">    &gt;&gt; print(scatter)</span>
+<span class="sd">    ivy.array([ 0, 11,  0, 10,  9,  0,  0, 12])</span>
 
+<span class="sd">    scatter into an empty array, With: `ivy.Container` input:</span>
+
+<span class="sd">    &gt;&gt; indices = ivy.Container(a=ivy.array([[4],[3],[6]]),</span>
+<span class="sd">                        b=ivy.array([[5],[1],[2]]))</span>
+<span class="sd">    &gt;&gt; updates = ivy.Container(a=ivy.array([100, 200, 200]),</span>
+<span class="sd">                        b=ivy.array([20, 30, 40]))</span>
+<span class="sd">    &gt;&gt; shape = ivy.Container(a=ivy.array([10]),</span>
+<span class="sd">                        b = ivy.array([10]))</span>
+<span class="sd">    &gt;&gt; z = ivy.scatter_nd(indices, updates, shape=shape, reduction=&#39;replace&#39;)</span>
+<span class="sd">    &gt;&gt; print(z)</span>
+<span class="sd">    {</span>
+<span class="sd">        a: ivy.array([0, 0, 0, 200, 100, 0, 200, 0, 0, 0]),</span>
+<span class="sd">        b: ivy.array([0, 30, 40, 0, 0, 20, 0, 0, 0, 0])</span>
+<span class="sd">    }</span>
+
+<span class="sd">    scatter into an array, With : `ivy.Container` and `ivy.Array` input:</span>
+
+<span class="sd">    &gt;&gt; indices = ivy.array([[4],[3],[1]])</span>
+<span class="sd">    &gt;&gt; updates = ivy.Container(a=ivy.array([10, 20, 30]),</span>
+<span class="sd">                    b=ivy.array([200, 300, 400]))</span>
+<span class="sd">    &gt;&gt; shape = ivy.array([10, 10])</span>
+<span class="sd">    &gt;&gt; arr = ivy.Container(a=ivy.array([1, 2, 3, 4, 5]),</span>
+<span class="sd">                            b = ivy.array([10, 20, 30, 40, 50]))</span>
+<span class="sd">    &gt;&gt; z = ivy.scatter_nd(indices, updates, tensor=arr, reduction=&#39;replace&#39;)</span>
+<span class="sd">    &gt;&gt; print(z)</span>
+<span class="sd">    {</span>
+<span class="sd">        a: ivy.array([1, 30, 3, 20, 10]),</span>
+<span class="sd">        b: ivy.array([10, 400, 30, 300, 200])</span>
+<span class="sd">    }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">current_backend</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">scatter_nd</span><span class="p">(</span>
         <span class="n">indices</span><span class="p">,</span> <span class="n">updates</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">reduction</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span>
